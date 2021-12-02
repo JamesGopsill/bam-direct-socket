@@ -1,0 +1,61 @@
+version: "3.7"
+
+services:
+  
+  # Entrypoint from the web
+  reverse-proxy:
+    image: traefik:v2.3
+    command:
+      - --providers.docker
+      - --providers.docker.exposedByDefault=false
+      - --entrypoints.web.address=:80
+      - --entryPoints.websecure.address=:443
+      - --api.insecure=true
+      - --api.debug=true
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  server:
+    image: node:16
+    expose: 
+      - 3000
+    env_file:
+      - .env
+    volumes:
+      - ./server/src:/app/src
+      - ./server/logs:/app/logs
+      - ./server/package.json:/app/package.json
+      - ./server/tsconfig.json:/app/tsconfig.json
+      - ./server/yarn.lock:/app/yarn.lock
+    command: >
+      bash -c "cd /app && 
+      yarn install &&
+      yarn start"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.server-socket.rule=PathPrefix(`/socket`)
+      - traefik.http.routers.server-logs.rule=PathPrefix(`/logs`)
+  
+  client:
+    image: node:16
+    expose: 
+      - 1234
+    env_file:
+      - .env
+    volumes:
+      - ./client/src:/app/src
+      - ./client/package.json:/app/package.json
+      - ./client/tsconfig.json:/app/tsconfig.json
+      - ./client/yarn.lock:/app/yarn.lock
+    command: >
+      bash -c "cd /app && 
+      yarn install &&
+      yarn start"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.client.rule=PathPrefix(`/`)
+

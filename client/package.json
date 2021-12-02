@@ -1,0 +1,30 @@
+{
+	"name": "socket-client",
+	"version": "0.1.0",
+	"description": "Peer-to-peer network for Brokering Additive Manufacturing.",
+	"main": "index.js",
+	"author": "James Gopsill",
+	"license": "MIT",
+	"private": false,
+	"scripts": {
+		"start": "parcel src/index.html",
+		"format": "prettier --write src/**/*"
+	},
+	"devDependencies": {
+		"@tsconfig/node16": "^1.0.2",
+		"@types/react": "^17.0.37",
+		"@types/react-dom": "^17.0.11",
+		"@types/uuid": "^8.3.3",
+		"antd": "^4.17.1",
+		"parcel": "^2.0.1",
+		"prettier": "^2.4.1",
+		"prettier-plugin-organize-imports": "^2.3.4",
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2",
+		"socket.io-client": "^4.4.0",
+		"typescript": "^4.5.2",
+		"ultimaker-client": "https://github.com/JamesGopsill/ultimaker-client",
+		"uuid": "^8.3.2"
+	},
+	"dependencies": {}
+}
