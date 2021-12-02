@@ -73,6 +73,10 @@ export const SubmissionAgent: FC = () => {
 		socket.on("connect_error", (err) => {
 			console.log(err instanceof Error) // true
 			console.log(err.message) // not authorised
+			notification["warning"]({
+				message: "Connection Error",
+				description: "Do you have the right key?",
+			})
 		})
 
 		socket.on("p2p-comm", (data) => {
@@ -117,7 +121,7 @@ export const SubmissionAgent: FC = () => {
 				<Form.Item name="id">
 					<Input placeholder="Printer ID" />
 				</Form.Item>
-				<Form.Item name="key" initialValue="BAM2021">
+				<Form.Item name="key">
 					<Input placeholder="Peer Key" />
 				</Form.Item>
 				<Form.Item name="operation" initialValue="status">

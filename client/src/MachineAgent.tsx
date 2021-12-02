@@ -1,4 +1,4 @@
-import { Button, Card, Divider, Form, Input, Space, Tag } from "antd"
+import { Button, Card, Divider, Form, Input, notification, Space, Tag } from "antd"
 import React, { FC, useRef, useState } from "react"
 import { io, Socket } from "socket.io-client"
 import { P2PCommunication } from "./interfaces"
@@ -62,6 +62,10 @@ export const MachineAgent: FC = () => {
 		s.on("connect_error", (err) => {
 			console.log(err instanceof Error) // true
 			console.log(err.message) // not authorised
+			notification["warning"]({
+				message: "Connection Error",
+				description: "Do you have the right key?",
+			})
 		})
 
 		s.on("p2p-comm", handleCommunication)
@@ -186,7 +190,6 @@ export const MachineAgent: FC = () => {
 			socket.current = null
 		}
 	}
-	//  (${agentStatus}) (${machineStatus})`
 
 	return (
 		<Card
@@ -202,7 +205,7 @@ export const MachineAgent: FC = () => {
 		>
 			<Form onFinish={joinNetwork}>
 				<Form.Item name="ip">
-					<Input placeholder="Printer IP Address (000.000.000.000)" />
+					<Input placeholder="Ultimkaer Printer IP Address (000.000.000.000)" />
 				</Form.Item>
 				<Form.Item name="key">
 					<Input placeholder="Peer Key" />
